@@ -12,7 +12,6 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { poppins_normal } from '@/component/font';
 import { supabase } from '@/dbInitial/supabase';
-import { log } from 'console';
 
 type Kuitansi = {
   id: number
@@ -31,7 +30,6 @@ export default function PemasukanPage() {
     const [totalHarga, setTotalHarga] = useState(0)
     const [datas, setDatas] = useState<any>([])
     const [isLoading, setIsLoading] = useState(true)
-    const [tanggalF, setTangglF] = useState('')
 
     const jakartaTime = new Date().toLocaleDateString("en-US", {timeZone: "Asia/Jakarta"})
     const sekarang = new Date(jakartaTime)
