@@ -21,9 +21,9 @@ type Kuitansi = {
 
 export default function Home() {
   const[age, setAge] = React.useState('');
-  const[datas, setDatas] = React.useState<any>([])
-  const[pemasukan, setPmeasukan] = React.useState<any>(0)
-  const[pengeluaran, setPengeluaran] = React.useState<any>(0)
+  const[datas, setDatas] = React.useState<Kuitansi[]>([])
+  const[pemasukan, setPmeasukan] = React.useState<number>(0)
+  const[pengeluaran, setPengeluaran] = React.useState<number>(0)
   const[isLoading, setIsLoading] = React.useState(true)
 
   const jakartaTime = new Date().toLocaleDateString("en-US", {timeZone: "Asia/Jakarta"})
@@ -40,7 +40,7 @@ export default function Home() {
   React.useEffect(() => {
     const fetch = async()=> {
       const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending:false})
-      setDatas(data)
+      setDatas(data ?? [])
       setIsLoading(false)
       if(error){
         console.log(error);
@@ -50,7 +50,7 @@ export default function Home() {
       const {data, error} = await supabase.from('kuitansi').select('harga').order('id', {ascending:false}).eq('jenis', "pemasukan")
       const total = data?.reduce((sum, item) => sum + (item.harga || 0), 0);
       console.log('Total harga:', total);
-      setPmeasukan(total)
+      setPmeasukan(total ?? 0)
       setIsLoading(false)
       if(error){
         console.log(error);
@@ -59,7 +59,7 @@ export default function Home() {
         const {data, error} = await supabase.from('kuitansi').select('harga').order('id', {ascending:false}).eq('jenis', "pengeluaran")
         const total = data?.reduce((sum, item) => sum + (item.harga || 0), 0);
         console.log('Total harga:', total);
-        setPengeluaran(total)
+        setPengeluaran(total ?? 0)
         setIsLoading(false)
         if(error){
           console.log(error);
@@ -80,7 +80,7 @@ export default function Home() {
                   console.log(age);
   
                   const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending: false}).eq('created_at', sekarang.toLocaleDateString())
-                  setDatas(data)
+                  setDatas(data ?? [])
                   if(error){
                       console.log(error);
                   }
@@ -88,7 +88,7 @@ export default function Home() {
                   console.log(age);
                   
                   const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending:false}).gte('created_at', lastMonth.toLocaleDateString()).lte('created_at', sekarang.toLocaleDateString())
-                  setDatas(data)
+                  setDatas(data ?? [])
                   if(error){
                       console.log(error);
                   }
@@ -96,13 +96,13 @@ export default function Home() {
                   console.log(age);
                   
                   const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending: false}).gte('created_at', lastThreeMonth.toLocaleDateString()).lte('created_at', sekarang.toLocaleDateString())
-                  setDatas(data)
+                  setDatas(data ?? [])
                   if(error){
                       console.log(error);
                   }
               }else if(age === "Semua"){
                   const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending:false})
-                  setDatas(data)
+                  setDatas(data ?? [])
                   if(error){
                       console.log(error);
                   }

@@ -28,7 +28,7 @@ export default function PemasukanPage() {
     const [age, setAge] = React.useState('');
     const [harga, setHarga] = useState(0)
     const [totalHarga, setTotalHarga] = useState(0)
-    const [datas, setDatas] = useState<any>([])
+    const [datas, setDatas] = useState<Kuitansi[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     const jakartaTime = new Date().toLocaleDateString("en-US", {timeZone: "Asia/Jakarta"})
@@ -75,7 +75,7 @@ export default function PemasukanPage() {
     useEffect(() => {
         const reqData = async () => {
             const { data, error } = await supabase.from('kuitansi').select('*').order('id', {ascending: false}).eq('jenis', "pemasukan")
-            setDatas(data)
+            setDatas(data ?? [])
             setIsLoading(false) 
             if(error){
                 console.log(error);
@@ -103,7 +103,7 @@ export default function PemasukanPage() {
                 console.log(age);
 
                 const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending: false}).eq('created_at', sekarang.toLocaleDateString()).eq('jenis', "pemasukan")
-                setDatas(data)
+                setDatas(data ?? [])
                 if(error){
                     console.log(error);
                 }
@@ -111,7 +111,7 @@ export default function PemasukanPage() {
                 console.log(age);
                 
                 const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending:false}).gte('created_at', lastMonth.toLocaleDateString()).lte('created_at', sekarang.toLocaleDateString()).eq('jenis', "pemasukan")
-                setDatas(data)
+                setDatas(data ?? [])
                 if(error){
                     console.log(error);
                 }
@@ -119,13 +119,13 @@ export default function PemasukanPage() {
                 console.log(age);
                 
                 const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending: false}).gte('created_at', lastThreeMonth.toLocaleDateString()).lte('created_at', sekarang.toLocaleDateString()).eq('jenis', "pemasukan")
-                setDatas(data)
+                setDatas(data ?? [])
                 if(error){
                     console.log(error);
                 }
             }else if(age === "Semua"){
                 const {data, error} = await supabase.from('kuitansi').select().order('id', {ascending:false}).eq('jenis', "pemasukan")
-                setDatas(data)
+                setDatas(data ?? [])
                 if(error){
                     console.log(error);
                 }
